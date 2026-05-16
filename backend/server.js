@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const path = require('path');
 
 dotenv.config();
 
@@ -16,20 +17,22 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/projects', require('./routes/projects'));
 app.use('/api/tasks', require('./routes/tasks'));
 
-// Health Check Route
+// Health Check
 app.get('/api/health', (req, res) => {
-  res.status(200).json({
+  res.json({
     status: 'ok',
     message: 'Server is running 🚀',
   });
 });
 
-// Root Route
-app.get('/', (req, res) => {
-  res.send('Backend API is running successfully 🚀');
+// Serve frontend
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Error Handler
+// Error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
 

@@ -1,0 +1,2 @@
+⚠️  Warning: JWT_SECRET is not set or is using the default value.
+   Set a strong JWT_SECRET in .env for production.

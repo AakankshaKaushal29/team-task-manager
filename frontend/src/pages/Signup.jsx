@@ -7,16 +7,22 @@ const Signup = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('member');
   const [loading, setLoading] = useState(false);
+
   const { signup } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     setLoading(true);
+
     try {
-      await signup(name, email, password);
+      await signup(name, email, password, role);
+
       toast.success('Account created successfully!');
+
       navigate('/dashboard');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Signup failed');
@@ -27,7 +33,7 @@ const Signup = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-dark-950 relative overflow-hidden p-4">
-      {/* Background decoration */}
+      {/* Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl" />
         <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
@@ -39,17 +45,26 @@ const Signup = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-purple-500 rounded-2xl mb-4 shadow-lg shadow-primary-500/25">
             <span className="text-white font-bold text-2xl">TT</span>
           </div>
-          <h1 className="text-3xl font-bold gradient-text">TaskFlow</h1>
-          <p className="text-dark-400 mt-2">Create your account</p>
+
+          <h1 className="text-3xl font-bold gradient-text">
+            TaskFlow
+          </h1>
+
+          <p className="text-dark-400 mt-2">
+            Create your account
+          </p>
         </div>
 
-        {/* Signup form */}
+        {/* Signup Form */}
         <div className="glass rounded-2xl p-8">
           <form onSubmit={handleSubmit} className="space-y-5">
+
+            {/* Name */}
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-2">
                 Name
               </label>
+
               <input
                 type="text"
                 value={name}
@@ -60,10 +75,12 @@ const Signup = () => {
               />
             </div>
 
+            {/* Email */}
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-2">
                 Email
               </label>
+
               <input
                 type="email"
                 value={email}
@@ -74,10 +91,12 @@ const Signup = () => {
               />
             </div>
 
+            {/* Password */}
             <div>
               <label className="block text-sm font-medium text-dark-300 mb-2">
                 Password
               </label>
+
               <input
                 type="password"
                 value={password}
@@ -89,12 +108,31 @@ const Signup = () => {
               />
             </div>
 
+            {/* Role */}
+            <div>
+              <label className="block text-sm font-medium text-dark-300 mb-2">
+                Select Role
+              </label>
+
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+                className="input-field"
+              >
+                <option value="member">Member</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+
+            {/* Button */}
             <button
               type="submit"
               disabled={loading}
               className="btn-primary w-full"
             >
-              {loading ? 'Creating account...' : 'Create Account'}
+              {loading
+                ? 'Creating account...'
+                : 'Create Account'}
             </button>
           </form>
 

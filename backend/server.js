@@ -48,7 +48,15 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ Connected to MongoDB');
+const path = require('path');
 
+// Serve built React frontend static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// For any other route (non-API), send React's index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
     app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
